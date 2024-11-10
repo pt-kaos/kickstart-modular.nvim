@@ -4,6 +4,10 @@
 
 *This is a fork of [nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) that moves from a single file to a multi file configuration.*
 
+**This fork has already my own custom keybindings, Options and Plugins.**
+**I also updated `init.lua` to load my customized files and leaderkey.
+
+
 A starting point for Neovim that is:
 
 * Small
