@@ -33,17 +33,18 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
--- -----------------------------------------------------------
--- -----------------------------------------------------------
--- My Personal Configuration, This should be in custom/plugins
--- -----------------------------------------------------------
--- -----------------------------------------------------------
+        -- -----------------------------------------------------------
+        -- -----------------------------------------------------------
+        -- My Personal Configuration, This should be in custom/plugins
+        -- -----------------------------------------------------------
+        -- -----------------------------------------------------------
         html = { 'htmlbeautifier' },
         -- Conform can also run multiple formatters sequentially
-        python = { "isort", "black" },
+        -- python = { "isort", "black" },
+        python = { 'isort' },
         go = { 'goimports', 'gofumpt' },
--- -----------------------------------------------------------
--- -----------------------------------------------------------
+        -- -----------------------------------------------------------
+        -- -----------------------------------------------------------
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },

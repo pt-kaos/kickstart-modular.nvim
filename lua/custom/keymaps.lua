@@ -22,6 +22,8 @@ vim.keymap.set('i', '<C-h>', '<Left>', { desc = 'Move left' })
 vim.keymap.set('i', '<C-l>', '<Right>', { desc = 'Move right' })
 vim.keymap.set('i', '<C-j>', '<Down>', { desc = 'Move down' })
 vim.keymap.set('i', '<C-k>', '<Up>', { desc = 'Move up' })
+-- Escape from terminal mode
+vim.keymap.set('t', '<C-t>', '<C-\\><C-n><C-w>w', { desc = 'Escape from Terminal mode and Move up' })
 
 -- --- Keys in Normal Mode
 -- Remap for dealing with word wrap
@@ -49,8 +51,31 @@ vim.keymap.set('n', "<leader>'", "viw<esc>a'<esc>bi'<esc>lel", { desc = "Comment
 vim.keymap.set('n', '<leader>ts', ':%s/\\s\\+$//<CR>', { desc = 'Clean [t]railing [s]paces' })
 -- Close a buffer
 vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = 'Close a buffer' })
+-- move between the quick fix list
+vim.keymap.set('n', '<A-j>', '<cmd>cnext<CR>', { desc = 'Move to the next quick fix item in the list' })
+vim.keymap.set('n', '<A-k>', '<cmd>cprev<CR>', { desc = 'Move to the previous quick fix item in the list' })
 
+-- run whatever under the cursor:
+vim.keymap.set('n', '<space><space>x', '<cmd>source %<CR>')
+vim.keymap.set('n', '<space>x', ':.lua<CR>')
+-- Create a simple terminal
+vim.keymap.set('n', '<space>st', function()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.cmd.wincmd 'J'
+  vim.api.nvim_win_set_height(0, 10)
+  job_id = vim.bo.channel
+end, { desc = 'Create a terminal at the bottom' })
+
+-- Create a custom command to execute inside the created shell
+vim.keymap.set('n', '<space>tt', function()
+  -- make, por exemplo
+  -- go build, go test, python, etc...
+  vim.fn.chansend(job_id, { 'ls -la\r\n' })
+end, { desc = 'Send a comand to the terminal -> ls -la as an example' })
 -- VISUAL MODE
+-- run whatever under the cursor:
+vim.keymap.set('v', '<space>x', ':lua<CR>')
 -- Reselect visual selection after indenting
 vim.keymap.set('v', '<', '<gv', { desc = '[<] Indent and Maintain selection' })
 vim.keymap.set('v', '>', '>gv', { desc = '[>] Indent and Maintain selection' })
@@ -71,7 +96,7 @@ vim.keymap.set('v', "<leader>'", ":normal! `>a'<esc>`<i'<esc>`>el", { desc = "Co
 -- Mode X
 -- Don't copy the replaced text after pasting in visual mode
 -- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
-vim.keymap.set('x', "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text", silent = true })
+vim.keymap.set('x', 'p', 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = 'Dont copy replaced text', silent = true })
 
 -- more keybinds!
 local pygroup = vim.api.nvim_create_augroup('PythonOnly', { clear = true })
@@ -99,5 +124,12 @@ vim.api.nvim_create_autocmd('FileType', {
 -- " To have Vim jump to the last position when reopening a file
 vim.api.nvim_create_autocmd('BufReadPost', { command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]] })
 
+-- Defenitions regarding the nvim terminal
+vim.api.nvim_create_autocmd('TermOpen', {
+  group = vim.api.nvim_create_augroup('custom-term-open', { clear = true }),
+  callback = function()
+    vim.opt.number = false
+    vim.opt.relativenumber = false
+  end,
+})
 -- ------------------
-

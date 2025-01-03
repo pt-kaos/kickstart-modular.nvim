@@ -1,0 +1,5 @@
+#[*.lua, *.python, *.c, *.cpp, *.html, *.css, *.yaml, *.json]
+[*.lua]
+indent_style = space
+indent_size = 4
+tab_width = 4
